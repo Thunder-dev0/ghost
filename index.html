@@ -1,0 +1,29 @@
+<!doctype html>
+<!--
+  OPTIONAL: hosted YouTube player page for VisionTube (only needed if YouTube shows "Error 153").
+
+  YouTube refuses to play embeds when the page that embeds them has an odd address. The in-game
+  page lives at https://cfx-nui-<resourcename>/ (no real domain, and TDev_carplay has an underscore),
+  so YouTube may reject it. This page is hosted on a normal https address instead, and CarPlay
+  just shows THIS page inside VisionTube.
+
+  Setup (GitHub Pages, free, ~2 minutes):
+   1. Create a public GitHub repo, upload this file as index.html
+   2. Repo Settings -> Pages -> deploy from branch "main" (root)
+   3. In TDev_carplay/public/static/config/config.json set:
+        "visiontube_embed_url": "https://YOURNAME.github.io/YOURREPO/?v={id}"
+   4. Restart the resource.
+-->
+<html><head><meta charset="utf-8"><meta name="referrer" content="strict-origin-when-cross-origin">
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}iframe{border:0;width:100%;height:100%}</style></head>
+<body><script>
+  var id=(new URLSearchParams(location.search).get('v')||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,11);
+  if(id){
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.setAttribute('allowfullscreen','');
+    f.referrerPolicy='strict-origin-when-cross-origin';
+    document.body.appendChild(f);
+  }
+</script></body></html>
